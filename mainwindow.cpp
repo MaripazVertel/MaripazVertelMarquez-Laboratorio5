@@ -1,36 +1,32 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "constants.h"
-
+#include <QRandomGenerator>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     timer = new QTimer(this);
     scene = new QGraphicsScene(this);
-    // Crear la tijera y asignar la imagen
-    QPixmap tijeraPixmap(":/tijera.png");
-    tijera = new Tijera(tijeraPixmap);
-
-    scene->setSceneRect(0, 0, HORZLIM, VERTLIM);
     ui->graphicsView->setScene(scene);
-    ui->graphicsView->resize(scene->width() + 5, scene->height() + 5);
-    this->resize(ui->graphicsView->width() + 100, ui->graphicsView->height() + 100);
 
-    scene->addItem(tijera);
-    // Asignar posición inicial de la tijera
-    tijera->setPos(50, 50);
+    // Botón para agregar tijeras
+    agregarTijeraButton = new QPushButton("Agregar Tijera", this);
+    connect(agregarTijeraButton, &QPushButton::clicked, this, &MainWindow::agregarTijera);
+    ui->verticalLayout->addWidget(agregarTijeraButton);
 
     timer->stop();
-    connect(timer, SIGNAL(timeout()), this, SLOT(actualizarEscena()));
+    connect(timer, &QTimer::timeout, this, &MainWindow::actualizarEscena);
 }
 
 MainWindow::~MainWindow()
 {
     delete timer;
-    delete tijera;
+    for (Tijera* tijera : tijeras)
+        delete tijera;
     delete scene;
     delete ui;
 }
@@ -40,7 +36,29 @@ void MainWindow::on_start_clicked()
     timer->start(20);
 }
 
-void MainWindow::actualizarEscena() {
-    tijera->move();
-    tijera->checkCollision();
+void MainWindow::actualizarEscena()
+{
+    for (Tijera* tijera : tijeras) {
+        tijera->move();
+        tijera->checkCollision();
+    }
+}
+
+void MainWindow::agregarTijera()
+{
+    if (tijeras.size() < MAX_TIJERAS) {
+        QPixmap tijeraPixmap(":/tijera.png");
+        Tijera* nuevaTijera = new Tijera(tijeraPixmap);
+        nuevaTijera->setPos(generateRandomPosition());
+        scene->addItem(nuevaTijera);
+        tijeras.append(nuevaTijera);
+    }
+}
+
+
+QPointF MainWindow::generateRandomPosition()
+{
+    qreal x = QRandomGenerator::global()->bounded(scene->width() - TIJERA_SIZE.width());
+    qreal y = QRandomGenerator::global()->bounded(scene->height() - TIJERA_SIZE.height());
+    return QPointF(x, y);
 }

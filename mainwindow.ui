@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MaripazLaboratorio5</class>
- <widget class="QMainWindow" name="MaripazLaboratorio5">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,27 +14,33 @@
    <string>MaripazLaboratorio5</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>500</y>
+      <width>701</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="start">
+       <property name="text">
+        <string>start</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>381</width>
-      <height>151</height>
+      <width>701</width>
+      <height>411</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="start">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>530</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>start</string>
     </property>
    </widget>
   </widget>

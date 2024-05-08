@@ -4,12 +4,14 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QGraphicsScene>
+#include <QPushButton>
 #include "Tijera.h"
 
+const int MAX_TIJERAS = 5;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -24,11 +26,15 @@ public:
 private slots:
     void on_start_clicked();
     void actualizarEscena();
+    void agregarTijera();
 
 private:
     Ui::MainWindow *ui;
     QTimer* timer = nullptr;
     QGraphicsScene* scene = nullptr;
-    Tijera *tijera = nullptr;
+    QVector<Tijera*> tijeras;
+    QPushButton* agregarTijeraButton = nullptr;
+    QPointF generateRandomPosition();
 };
+
 #endif // MAINWINDOW_H
