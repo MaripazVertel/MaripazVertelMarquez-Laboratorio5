@@ -9,6 +9,7 @@
 
 const int MAX_TIJERAS = 5;
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -35,6 +36,9 @@ private:
     QVector<Tijera*> tijeras;
     QPushButton* agregarTijeraButton = nullptr;
     QPointF generateRandomPosition();
+    QPointF generatePositionForNewTijera(Tijera* nuevaTijera);
+    static const qreal ESPACIO_ENTRE_TIJERAS;
+
 };
 
 #endif // MAINWINDOW_H

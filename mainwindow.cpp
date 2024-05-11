@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include "constants.h"
 #include <QRandomGenerator>
+#include "constants.h"
+#include "Tijera.h"
+
+const qreal MainWindow::ESPACIO_ENTRE_TIJERAS = 200;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -44,21 +48,23 @@ void MainWindow::actualizarEscena()
     }
 }
 
+
+Tijera::Tijera(const QPixmap &pixmap, QGraphicsItem *parent)
+    : QGraphicsPixmapItem(pixmap.scaledToWidth(40), parent)
+{}
+
 void MainWindow::agregarTijera()
 {
+    int desplazamiento = 50; // Asumiendo un desplazamiento constante entre cada par de tijeras
     if (tijeras.size() < MAX_TIJERAS) {
         QPixmap tijeraPixmap(":/tijera.png");
         Tijera* nuevaTijera = new Tijera(tijeraPixmap);
-        nuevaTijera->setPos(generateRandomPosition());
+        // Calcular la posición basándose en el índice y el desplazamiento
+        qreal x = tijeras.size() * desplazamiento;
+        qreal y = tijeras.size() * desplazamiento;
+        nuevaTijera->setPos(QPointF(x, y));
         scene->addItem(nuevaTijera);
         tijeras.append(nuevaTijera);
     }
 }
 
-
-QPointF MainWindow::generateRandomPosition()
-{
-    qreal x = QRandomGenerator::global()->bounded(scene->width() - TIJERA_SIZE.width());
-    qreal y = QRandomGenerator::global()->bounded(scene->height() - TIJERA_SIZE.height());
-    return QPointF(x, y);
-}
