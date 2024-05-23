@@ -16,8 +16,6 @@ void Tijera::move() {
     this->setPos(newPosX, newPosY);
 }
 
-
-
 void Tijera::checkCollision() {
 
 }

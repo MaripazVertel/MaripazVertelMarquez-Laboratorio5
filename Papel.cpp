@@ -20,3 +20,5 @@ void Papel::move() {
 void Papel::checkCollision() {
 
 }
+
+
