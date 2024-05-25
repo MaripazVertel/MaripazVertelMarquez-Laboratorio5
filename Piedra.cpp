@@ -14,11 +14,3 @@ void Piedra::move() {
        this->setPos(newPosX, newPosY);
    }
 
-void Piedra::checkCollision() {
-
-}
-
-
-
-
-

@@ -17,8 +17,4 @@ void Papel::move() {
 
         this->setPos(newPosX, newPosY);
     }
-void Papel::checkCollision() {
-
-}
-
 
