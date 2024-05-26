@@ -6,6 +6,10 @@
 #include "Tijera.h"
 #include "Papel.h"
 #include "Piedra.h"
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QLineEdit>
+
 
 const qreal MainWindow::ESPACIO_ENTRE_TIJERAS = 200;
 const qreal MainWindow::ESPACIO_ENTRE_PAPELES= 200;
@@ -304,7 +308,18 @@ void MainWindow::on_ingresarJugador_clicked()
 
         // Iniciar el temporizador para crear objetos automáticamente cada 10 segundos
         autoCreateTimer->start(10000); // 10000 ms = 10 segundos
+
+        bool ok;
+            QString nombreJugador = QInputDialog::getText(this, tr("Ingresar Jugador"),
+                                                          tr("Nombre del jugador:"), QLineEdit::Normal,
+                                                          "", &ok);
+            if (ok && !nombreJugador.isEmpty()) {
+                // Guardar el nombre del jugador
+                this->nombreJugador = nombreJugador;
+            }
     }
+
+
 }
 
 void MainWindow::actualizarContador()
@@ -317,12 +332,10 @@ void MainWindow::actualizarContador()
             .arg(minutos, 2, 10, QLatin1Char('0'))
             .arg(segundos, 2, 10, QLatin1Char('0')));
     } else {
-        contadorTimer->stop();
-        scene->removeItem(mira);
-        delete mira;
-        mira = nullptr;
+        finalizarJuego();
     }
 }
+
 
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -417,4 +430,51 @@ void MainWindow::realizarAtaque()
 
     // Actualizar la etiqueta de puntos del jugador
     puntosJugadorLabel->setText("Puntos del jugador: " + QString::number(puntosJugador));
+}
+
+void MainWindow::finalizarJuego()
+{
+    // Detener todos los temporizadores
+    timer->stop();
+    contadorTimer->stop();
+    autoCreateTimer->stop();
+
+    // Deshabilitar los botones de agregar objetos
+    agregarTijeraButton->setDisabled(true);
+    agregarPapelButton->setDisabled(true);
+    agregarPiedraButton->setDisabled(true);
+
+    // Remover la mira
+    if (mira) {
+        scene->removeItem(mira);
+        delete mira;
+        mira = nullptr;
+    }
+    determinarGanador();
+
+
+}
+void MainWindow::determinarGanador()
+{
+    QString ganador;
+    int puntajeGanador = 0;
+
+    // Comparar los puntos
+    if (puntosJugador > tijerasEliminadas && puntosJugador > papelesEliminados && puntosJugador > piedrasEliminadas) {
+        ganador = nombreJugador;
+        puntajeGanador = puntosJugador;
+    } else if (tijerasEliminadas < papelesEliminados && tijerasEliminadas < piedrasEliminadas) {
+        ganador = "Tijeras";
+        puntajeGanador = tijerasEliminadas;
+    } else if (papelesEliminados < piedrasEliminadas) {
+        ganador = "Papeles";
+        puntajeGanador = papelesEliminados;
+    } else {
+        ganador = "Piedras";
+        puntajeGanador = piedrasEliminadas;
+    }
+
+    // Mostrar el ganador
+    QMessageBox::information(this, "Fin del juego",
+                             QString("El ganador es: %1 con un puntaje de %2").arg(ganador).arg(puntajeGanador));
 }

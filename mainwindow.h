@@ -44,6 +44,8 @@ private slots:
     void keyPressEvent(QKeyEvent *event) override;
     void crearObjetosAutomaticamente();
     void realizarAtaque();
+    void finalizarJuego();
+    void determinarGanador();
 
 private:
         Ui::MainWindow *ui;
@@ -69,6 +71,7 @@ private:
         QLabel *piedrasEliminadasLabel;
         QLabel *papelesEliminadasLabel;
         void actualizarConteo();
+        QString nombreJugador;
 
 
         QGraphicsPixmapItem* mira = nullptr;

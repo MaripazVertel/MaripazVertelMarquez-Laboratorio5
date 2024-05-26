@@ -2,8 +2,8 @@
 #define CONSTANTS_H
 #include <QSize>
 
-const float HORZLIM = 650;
-const float VERTLIM = 350;
+const float HORZLIM = 620;
+const float VERTLIM = 320;
 
 const QSize TIJERA_SIZE(50, 50);
 
